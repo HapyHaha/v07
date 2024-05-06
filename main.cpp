@@ -9,21 +9,21 @@ void main_window::on_paint(HDC hdc)
 	RECT clientRect;
 	GetClientRect(*this, &clientRect);
 	if (!selectedImagePath.empty()) {
-		const wchar_t* widePath = selectedImagePath.c_str();
-		Image image(widePath);
-		graphics.DrawImage(&image, 0, 0, clientRect.right, clientRect.bottom);
+		
+		graphics.DrawImage(image.get(), 0, 0, clientRect.right, clientRect.bottom);
 
 		std::filesystem::path filePath(selectedImagePath);
 		std::wstring fileName = filePath.filename().wstring();
 
+		
 		Font font(L"Arial", 32, FontStyleBold, UnitPixel);
 		RectF textRect;
 		graphics.MeasureString(fileName.c_str(), -1, &font, PointF(0, 0), &textRect);
 		float textX = (clientRect.right - textRect.Width) / 2.0f;
 		float textY = static_cast<float>(clientRect.bottom - 70);
-		SolidBrush shadowBrush(Color(100, 0, 0, 0));
+		SolidBrush shadowBrush(Gdiplus::Color::Black);
 		graphics.DrawString(fileName.c_str(), -1, &font, PointF(textX + 1, textY + 1), &shadowBrush);
-		SolidBrush textBrush(Color(255, 255, 255, 255));
+		SolidBrush textBrush(Gdiplus::Color::White);
 		graphics.DrawString(fileName.c_str(), -1, &font, PointF(textX, textY), &textBrush);
 	}
 	
@@ -50,6 +50,8 @@ void main_window::on_command(int id)
 			if (GetOpenFileName(&ofn) == TRUE) {
 				selectedImagePath = filename;
 				InvalidateRect(*this, nullptr, TRUE);
+				const wchar_t* path = selectedImagePath.c_str();
+				image = std::make_unique<Gdiplus::Image>(path);
 			}
 			break;
 		}

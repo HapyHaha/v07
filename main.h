@@ -3,6 +3,7 @@
 #include "nwpwin.h"
 
 #include <gdiplus.h>
+#include <gdiplusheaders.h>
 
 class gdiplus_application : public vsite::nwp::application
 {
@@ -20,6 +21,7 @@ public:
 class main_window : public vsite::nwp::window {
 private:
 	std::wstring selectedImagePath;
+	std::unique_ptr<Gdiplus::Image> image;
 protected:
 	void on_paint(HDC hdc) override;
 	void on_command(int id) override;
