@@ -13,7 +13,7 @@ void main_window::on_paint(HDC hdc)
 		graphics.DrawImage(image.get(), 0, 0, clientRect.right, clientRect.bottom);
 
 		std::filesystem::path filePath(selectedImagePath);
-		std::wstring fileName = filePath.filename().wstring();
+		std::wstring fileName = filePath.filename();
 
 		
 		Font font(L"Arial", 32, FontStyleBold, UnitPixel);
