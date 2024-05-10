@@ -15,16 +15,16 @@ void main_window::on_paint(HDC hdc)
 		std::filesystem::path filePath(selectedImagePath);
 		std::wstring fileName = filePath.filename();
 
-		
-		Font font(L"Arial", 32, FontStyleBold, UnitPixel);
-		RectF textRect;
-		graphics.MeasureString(fileName.c_str(), -1, &font, PointF(0, 0), &textRect);
-		float textX = (clientRect.right - textRect.Width) / 2.0f;
-		float textY = static_cast<float>(clientRect.bottom - 70);
-		SolidBrush shadowBrush(Gdiplus::Color::Black);
-		graphics.DrawString(fileName.c_str(), -1, &font, PointF(textX + 1, textY + 1), &shadowBrush);
-		SolidBrush textBrush(Gdiplus::Color::White);
-		graphics.DrawString(fileName.c_str(), -1, &font, PointF(textX, textY), &textBrush);
+		Gdiplus::Font font(L"Arial", 20);
+		Gdiplus::SolidBrush black(Gdiplus::Color::Black);
+		Gdiplus::SolidBrush white(Gdiplus::Color::White);
+		Gdiplus::StringFormat format;
+		Gdiplus::RectF TR(clientRect.left, clientRect.top, clientRect.right, clientRect.bottom);
+		Gdiplus::RectF TS(clientRect.left - 3, clientRect.top, clientRect.right + 3, clientRect.bottom);
+		format.SetAlignment(Gdiplus::StringAlignmentCenter);
+		format.SetLineAlignment(Gdiplus::StringAlignmentFar);
+		graphics.DrawString(fileName.c_str(), -1, &font, TR, &format, &black);
+		graphics.DrawString(fileName.c_str(), -1, &font, TS, &format, &white);
 	}
 	
 }
